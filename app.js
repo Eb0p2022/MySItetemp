@@ -16,6 +16,10 @@ app.get('/', (req, res) => {
     res.render('home');
 })
 
+app.get('/multimedia', (req, res) => {
+    res.render('multimedia-single');
+})
+
 app.listen('4000', () => {
     console.log('The Den Server has started...');
 })
