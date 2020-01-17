@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/multimedia', (req, res) => {
-    res.render('multimedia-single');
+    res.render('movie-single');
 })
 
 app.listen('4000', () => {
