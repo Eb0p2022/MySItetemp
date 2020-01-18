@@ -16,7 +16,11 @@ app.get('/', (req, res) => {
     res.render('home');
 })
 
-app.get('/multimedia', (req, res) => {
+app.get('/movies', (req, res) => {
+    res.render('movies');
+})
+
+app.get('/movie-single', (req, res) => {
     res.render('movie-single');
 })
 
