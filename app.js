@@ -20,13 +20,15 @@ mongoose
 	}).catch(err => {
 		console.log(err);
 	});
+
+//	====	Template Setup	====
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use('/public', express.static(path.join(__dirname, "/public")));
 
 //  ====    AUTH Setup  ====
 app.use(expressSession({
-	secret: 'David is a giant at killing giants',
+	secret: 'The Den wins!',
 	saveUninitialized: false,
 	resave: false
 }));
@@ -38,7 +40,7 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
+//	====	All Routes used for Server
 app.use(adminRoutes);
 app.use(movieRoutes);
 app.use(errorController.get404);
