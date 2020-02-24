@@ -3,11 +3,11 @@
 <link rel="stylesheet" href="../public/css/admin.css">    
 <div class="log-form">
     <h2>ADMIN LOGIN</h2>
-    <form>
-        <input type="text" title="username" placeholder="username" />
-        <input type="password" title="username" placeholder="password" />
-        <button type="submit" class="btn">Login</button>
-        <a class="forgot" href="#">Forgot Username?</a>
+    <form action="/admin/verifyLogin" method="POST">
+        <input type="text" name="username" placeholder="username">
+        <input type="password" name="password" placeholder="password">
+        <button type="submit" class="btn centered">Login</button>
+        <a class="forgot" href="/admin/newAdmin">Register ?</a>
     </form>
 </div>
 <!--end log form -->

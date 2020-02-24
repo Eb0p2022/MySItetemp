@@ -1,0 +1,14 @@
+
+<link rel="stylesheet" href="../public/css/admin.css">
+<div class="log-form">
+    <h2>ADMIN LOGIN</h2>
+    <form action="/admin/createAdmin" method="POST">
+        <input type="text" name="username" placeholder="username">
+        <input type="password" name="password" placeholder="password">
+        <button type="submit" class="btn centered">Register</button>
+        <a class="forgot" href="/admin/adminLogIn">Log In?</a>
+    </form>
+</div>
+<!--end log form -->
+
+<%- include ('../partials/footer') -%>  

@@ -4,6 +4,7 @@ const express = require('express'),
 	bodyParser = require('body-parser'),
 	expressSession = require('express-session');
 	errorController = require('./controllers/error'),
+	flash = require('connect-flash'),
 	localStrategy = require('passport-local')
 	methodOverride = require('method-override'),
 	movieRoutes = require('./routes/movie'),
@@ -33,6 +34,9 @@ app.use(expressSession({
 	resave: false
 }));
 
+//  ====    Flash Messages use   ====
+app.use(flash());
+
 //  ====    Passport Setup  ====
 app.use(passport.initialize());
 app.use(passport.session());
@@ -40,8 +44,15 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use(function (req, res, next) {
+	res.locals.currentUser = req.user;
+	res.locals.error = req.flash('error');
+	res.locals.success = req.flash('success');
+	next();
+});
+
 //	====	All Routes used for Server
-app.use(adminRoutes);
+app.use('/admin', adminRoutes);
 app.use(movieRoutes);
 app.use(errorController.get404);
 
