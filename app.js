@@ -29,7 +29,7 @@ app.use('/public', express.static(path.join(__dirname, "/public")));
 
 //  ====    AUTH Setup  ====
 app.use(expressSession({
-	secret: 'The Den wins!',
+	secret: 'The Den',
 	saveUninitialized: false,
 	resave: false
 }));

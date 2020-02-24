@@ -1,4 +1,5 @@
-const User = require('../models/user');
+const   passport = require('passport'),
+        User = require('../models/user');
 exports.LogIn = (req, res, next) => {
     res.render('admin/adminLogIn', {
         pageTitle: 'Admin | Log In'
@@ -6,8 +7,11 @@ exports.LogIn = (req, res, next) => {
 };
 
 exports.postLogIn = (req, res, next) => {
-    req.flash('success', 'Successfully logged in');
-    res.redirect('/admin/adminLogIn');
+    //  Logic to handle login
+    req.flash('success', 'Successfully logged in!');
+    res.render('admin/adminPage', {
+        pageTitle: 'Admin Page  |   Welcome'
+    });
 };
 
 exports.newAdmin = (req, res, next) => {
@@ -18,15 +22,17 @@ exports.newAdmin = (req, res, next) => {
 
 exports.createAdmin = (req, res, next) => {
     let newAdmin = {
-        username: req.body.username,
-        password: req.body.username
+        username: req.body.username
     }
     User
-    .create(newAdmin)
-    .then(newAdmin => {
-        console.log(newAdmin, 'Admin succesfully created!');
-        res.redirect('/admin/adminLogIn');
+    .register(newAdmin, req.body.password)
+    .then(newlyCreatedAdmin => {
+        passport.authenticate('local', () => {
+            console.log(newlyCreatedAdmin, 'Admin succesfully created!');
+            res.redirect('/admin/adminLogIn');
+        })
     }).catch(err => {
-        console.log(err);
+        req.flash('error', err.message);
+        res.render('admin/newAdmin');
     });
 };

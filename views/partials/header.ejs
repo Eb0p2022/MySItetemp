@@ -104,3 +104,18 @@
             </div>
         </header>
         <!-- ***** Header Area End ***** -->
+        <% if(error && error.length > 0){ %>
+        <div class="container message">
+            <div class="alert alert-danger">
+                <%= error %>
+            </div>
+        </div>
+        <% } %>
+        
+        <% if(success != success.length > 0){ %>
+        <div class="container message">
+            <div class="alert alert-success">
+                <%= success %>
+            </div>
+        </div>
+        <% } %>
