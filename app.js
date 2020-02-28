@@ -1,17 +1,18 @@
-const express = require('express'),
-	adminRoutes = require('./routes/admin'),
-	app = express(),
-	bodyParser = require('body-parser'),
-	expressSession = require('express-session');
-	errorController = require('./controllers/error'),
-	flash = require('connect-flash'),
-	localStrategy = require('passport-local')
-	methodOverride = require('method-override'),
-	movieRoutes = require('./routes/movie'),
-	mongoose = require('mongoose'),
-	passport = require('passport'),
-	path = require('path'),
-	User = require('./models/user');
+const 	express = require('express'),
+		adminRoutes = require('./routes/admin'),
+		app = express(),
+		bodyParser = require('body-parser'),
+		expressSession = require('express-session');
+		errorController = require('./controllers/error'),
+		flash = require('connect-flash'),
+		localStrategy = require('passport-local')
+		methodOverride = require('method-override'),
+		movieRoutes = require('./routes/movie'),
+		mongoose = require('mongoose'),
+		passport = require('passport'),
+		path = require('path'),
+		seedDB = require('./util/seed'),
+		User = require('./models/user_model');
 
 //  ====    DB Setup    ====
 mongoose
@@ -21,6 +22,9 @@ mongoose
 	}).catch(err => {
 		console.log(err);
 	});
+
+//  ====	Seed Database with sample values	====
+// seedDB();
 
 //	====	Template Setup	====
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -34,9 +38,6 @@ app.use(expressSession({
 	resave: false
 }));
 
-//  ====    Flash Messages use   ====
-app.use(flash());
-
 //  ====    Passport Setup  ====
 app.use(passport.initialize());
 app.use(passport.session());
@@ -44,6 +45,8 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+//	====	flash messages setup	====
+app.use(flash());
 app.use(function (req, res, next) {
 	res.locals.currentUser = req.user;
 	res.locals.error = req.flash('error');

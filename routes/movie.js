@@ -6,10 +6,6 @@ router.get('/', movieController.index);
 
 router.get('/movies', movieController.getMovies);
 
-router.get('/movie-single', (req, res) => {
-    res.render('movie-single', {
-        pageTitle: 'Single Movie'
-    });
-})
+router.get('/movie/:id', movieController.getMovieSingle)
 
 module.exports = router;
