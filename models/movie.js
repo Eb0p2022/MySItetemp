@@ -5,12 +5,16 @@ const movieSchema = new mongoose.Schema({
 	synopsis: String,
 	review: String,
 	fileLink: String,
+	genre: String,
 	image: String,
 	ratings: {
 		IMDB: String,
 		rottenTomatoes: String, 
 		googleReviews: String,
-		denReviews: String
+		denReviews: {
+			ratings: String,
+			text: String
+		}
 	},
 	id: mongoose.Schema.Types.ObjectId
 });

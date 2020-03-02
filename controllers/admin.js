@@ -13,6 +13,7 @@ exports.postLogIn = [passport.authenticate('local', {
 }), 
     (req, res, next) => {
         let username = req.user.username;
+        console.log(req.user);
         req.flash('success', 'Successfully logged in! Welcome, ' + username);
         Log.create(
             {
@@ -40,7 +41,9 @@ exports.newAdmin = (req, res, next) => {
 
 exports.createAdmin = (req, res, next) => {
     let newAdmin = {
-        username: req.body.username
+        username: req.body.username,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName
     }
     User.register(newAdmin, req.body.password, (err, newlyCreatedAdmin) => {
         if(err) {
@@ -51,7 +54,7 @@ exports.createAdmin = (req, res, next) => {
             });
         }
         passport.authenticate('local')(req, res, function() {
-            req.flash('success', newlyCreatedAdmin.username + ', your account has been created! Please log in!' + '!');
+            req.flash('success', newlyCreatedAdmin.firstName + ', your account has been created! Please log in!' + '!');
             res.redirect('/admin/adminLogIn');
         });
     });

@@ -17,16 +17,14 @@ exports.index = (req, res, next) => {
 
 exports.getMovieSingle = (req, res) => {
 	let movieID = req.params.id;
-	Movie.findOne({
-		id: movieID
-	}, (err, foundMovie) => {
-		if(err) {
+	Movie.findById(movieID, (err, foundMovie) => {
+		if (err) {
 			console.log(err);
-			res.redirect('/movie')
+			res.redirect('/movies');
 		}
 		res.render('movie-single', {
-			pageTitle: 'Single Movie'
+			pageTitle: foundMovie.title,
+			movie: foundMovie
 		});
-
-	})
+	});
 };
