@@ -11,7 +11,19 @@ const data = [
             IMDB: '',
             rottenTomatoes: '',
             googleReviews: '',
-            denReviews: '4/5'
+            denReviews: {
+                ratings: '4/5',
+                text: 'Nulla ut maximus mauris. Sed malesuada at sapien sed euismod. \
+                Vestibulum pharetra in sem id laoreet. \
+                Cras metus ex, placerat nec justo quis, luctus posuere ex. \
+                Vivamus volutpat nibh ac sollicitudin imperdiet. \
+                Donec scelerisque lorem sodales odio ultricies, nec rhoncus ex lobortis.\
+                Vivamus tincidunt sit amet sem id varius.\
+                Donec ele- mentum aliquet tortor.Curabitur justo mi, efficitur sed eros aliquet, dictum molestie eros.\
+                Nullam scelerisque convallis gravida.\
+                Morbi id lorem accumsan, scelerisque enim laoreet, sollicitudin neque.\
+                Vivamus volutpat nibh ac sollicitudin imperdiet. Donec scelerisque'
+            }
         }
     },
     {
@@ -24,7 +36,19 @@ const data = [
             IMDB: '',
             rottenTomatoes: '',
             googleReviews: '',
-            denReviews: '2/5'
+            denReviews: {
+                ratings: '2/5',
+                text: 'Nulla ut maximus mauris. Sed malesuada at sapien sed euismod. \
+                Vestibulum pharetra in sem id laoreet. \
+                Cras metus ex, placerat nec justo quis, luctus posuere ex. \
+                Vivamus volutpat nibh ac sollicitudin imperdiet. \
+                Donec scelerisque lorem sodales odio ultricies, nec rhoncus ex lobortis.\
+                Vivamus tincidunt sit amet sem id varius.\
+                Donec ele- mentum aliquet tortor.Curabitur justo mi, efficitur sed eros aliquet, dictum molestie eros.\
+                Nullam scelerisque convallis gravida.\
+                Morbi id lorem accumsan, scelerisque enim laoreet, sollicitudin neque.\
+                Vivamus volutpat nibh ac sollicitudin imperdiet. Donec scelerisque'
+            }
         }
     },
     {
@@ -37,7 +61,19 @@ const data = [
             IMDB: '',
             rottenTomatoes: '',
             googleReviews: '',
-            denReviews: '4.5/5'
+            denReviews: {
+                ratings: '4.5/5',
+                text: 'Nulla ut maximus mauris. Sed malesuada at sapien sed euismod. \
+                Vestibulum pharetra in sem id laoreet. \
+                Cras metus ex, placerat nec justo quis, luctus posuere ex. \
+                Vivamus volutpat nibh ac sollicitudin imperdiet. \
+                Donec scelerisque lorem sodales odio ultricies, nec rhoncus ex lobortis.\
+                Vivamus tincidunt sit amet sem id varius.\
+                Donec ele- mentum aliquet tortor.Curabitur justo mi, efficitur sed eros aliquet, dictum molestie eros.\
+                Nullam scelerisque convallis gravida.\
+                Morbi id lorem accumsan, scelerisque enim laoreet, sollicitudin neque.\
+                Vivamus volutpat nibh ac sollicitudin imperdiet. Donec scelerisque'
+            }
         }
     }
 ];

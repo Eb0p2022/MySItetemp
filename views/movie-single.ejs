@@ -16,28 +16,13 @@
         <div class="row">
             <div class="col-xl-9 col-lg-8 col-md-7 game-single-content">
                 <div class="gs-meta">11.11.18 in <a href="">Movies</a></div>
-                <h2 class="gs-title">Final Appocalipse 2.1</h2>
+                <h2 class="gs-title"><%= movie.title %> </h2>
                 <h4>Synopsis</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Ipsum dolor sit amet, consectetur
-                    adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliquamet, consectetur
-                    adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vestibulum
-                    posuere porttitor justo id pellentesque. Proin id lacus feugiat, posuere erat sit amet, commodo
-                    ipsum. Donec pellentesque vestibulum metus.</p>
+                <p><%= movie.synopsis %> </p>
                 <h4>The Den Review</h4>
-                <p>Nulla ut maximus mauris. Sed malesuada at sapien sed euismod. Vestibulum pharetra in sem id laoreet.
-                    Cras metus ex, placerat nec justo quis, luctus posuere ex. Vivamus volutpat nibh ac sollicitudin
-                    imperdiet. Donec scelerisque lorem sodales odio ultricies, nec rhoncus ex lobortis. Vivamus
-                    tincidunt sit amet sem id varius. Donec ele-mentum aliquet tortor. Curabitur justo mi, efficitur sed
-                    eros aliquet, dictum molestie eros. Nullam scelerisque convallis gravida. Morbi id lorem accumsan,
-                    scelerisque enim laoreet, sollicitudin neque. Vivamus volutpat nibh ac sollicitudin imperdiet. Donec
-                    scelerisque lorem sodales odio ultricies, nec rhoncus ex lobortis. Vivamus tincidunt sit amet sem id
-                    varius. Donec ele-mentum aliquet tortor. Curabitur justo mi, efficitur sed eros aliqueDonec vitae
-                    tellus sodales, congue augue at, biben-dum justo. Pellentesque non dolor et magna volutpat pharetra
-                    eget vel ligula. Maecenas facilisis vestibulum mattis. Sed sagittis gravida urna. Cras nec mi risus.
-                </p>
+                <p><%= movie.ratings.denReviews.text %> </p>
                 <div>
-                    <a class="download" href="#">Download Final Appocalipse</a>
+                    <a class="download" href="<%= movie.fileLink %>">Download Final Appocalipse</a>
                 </div>
                 <div class="geme-social-share pt-5 d-flex">
                     <p>Share:</p>
@@ -51,12 +36,12 @@
                         <div class="rating-widget">
                             <h4 class="widget-title">Movie Ratings</h4>
                             <ul>
-                                <li>Rotten Tomatoes<span>3.5/5</span></li>
-                                <li>Google Reviews<span>4.5/5</span></li>
-                                <li>IMDB<span>4.5/5</span></li>
+                                <li>Rotten Tomatoes<span><%= movie.ratings.rottenTomatoes %></span></li>
+                                <li>Google Reviews<span><%= movie.ratings.googleReviews %></span></li>
+                                <li>IMDB<span><%= movie.ratings.IMDB %></span></li>
                             </ul>
                             <div class="rating">
-                                <h5><i>The DEN</i><span>4.5</span> / 5</h5>
+                                <h5><i>The DEN</i><span><%= movie.ratings.denReviews.ratings %></span></h5>
                             </div>
                         </div>
                     </div>

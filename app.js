@@ -1,27 +1,21 @@
 const 	express = require('express'),
-		adminRoutes = require('./routes/admin'),
-		app = express(),
 		bodyParser = require('body-parser'),
-		expressSession = require('express-session');
-		errorController = require('./controllers/error'),
 		flash = require('connect-flash'),
-		localStrategy = require('passport-local')
-		methodOverride = require('method-override'),
-		movieRoutes = require('./routes/movie'),
+		localStrategy = require('passport-local'),
 		mongoose = require('mongoose'),
 		passport = require('passport'),
 		path = require('path'),
+		expressSession = require('express-session');
+
+const 	adminRoutes = require('./routes/admin'),
+		app = express(),
+		errorController = require('./controllers/error'),
+		movieRoutes = require('./routes/movie'),
 		seedDB = require('./util/seed'),
+		PORT = process.env.PORT||'4000',
 		User = require('./models/user_model');
 
 //  ====    DB Setup    ====
-mongoose
-	.connect('mongodb://localhost/the_den', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
-	.then(() => {
-		console.log('Connected to MongoDB');
-	}).catch(err => {
-		console.log(err);
-	});
 
 //  ====	Seed Database with sample values	====
 // seedDB();
@@ -59,6 +53,14 @@ app.use('/admin', adminRoutes);
 app.use(movieRoutes);
 app.use(errorController.get404);
 
-app.listen('4000', () => {
-	console.log('The Den Server has started...');
-})
+mongoose
+	.connect('mongodb://localhost/the_den', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+	.then(() => {
+		console.log('Connected to MongoDB');
+		app.listen(PORT, () => {
+			console.log(`The Den Server has started on port ${PORT}...`);
+		})
+	})
+	.catch(err => {
+		console.log(err);
+	});
