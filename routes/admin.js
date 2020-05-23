@@ -7,6 +7,9 @@ router.get('/adminLogIn', adminController.LogIn);
 router.post('/verifyLogin', ...(adminController.postLogIn));
 
 router.get('/adminPage', adminController.adminPage);
+router.get('/addContent', adminController.addContent);
+
+router.post('/addContent', adminController.postContent);
 
 router.get('/newAdmin', adminController.newAdmin);
 router.post('/createAdmin', adminController.createAdmin);

@@ -14,16 +14,19 @@ const 	adminRoutes = require('./routes/admin'),
 		seedDB = require('./util/seed'),
 		PORT = process.env.PORT||'4000',
 		User = require('./models/user_model');
+		flash_messages = require('./util/flash_messages');
 
 //  ====    DB Setup    ====
 
 //  ====	Seed Database with sample values	====
 // seedDB();
 
+console.log(__dirname);
+
 //	====	Template Setup	====
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
-app.use('/public', express.static(path.join(__dirname, "/public")));
+app.use('/public', express.static(path.join(__dirname, "public")));
 
 //  ====    AUTH Setup  ====
 app.use(expressSession({
@@ -41,12 +44,7 @@ passport.deserializeUser(User.deserializeUser());
 
 //	====	flash messages setup	====
 app.use(flash());
-app.use(function (req, res, next) {
-	res.locals.currentUser = req.user;
-	res.locals.error = req.flash('error');
-	res.locals.success = req.flash('success');
-	next();
-});
+app.use(flash_messages);
 
 //	====	All Routes used for Server
 app.use('/admin', adminRoutes);

@@ -1,6 +1,7 @@
 const   Log = require('../models/log'),
         passport = require('passport'),
         User = require('../models/user_model');
+
 exports.LogIn = (req, res, next) => {
     res.render('admin/adminLogIn', {
         pageTitle: 'Admin | Log In'
@@ -13,7 +14,6 @@ exports.postLogIn = [passport.authenticate('local', {
 }), 
     (req, res, next) => {
         let username = req.user.username;
-        console.log(req.user);
         req.flash('success', 'Successfully logged in! Welcome, ' + username);
         Log.create(
             {
@@ -61,7 +61,20 @@ exports.createAdmin = (req, res, next) => {
 };
 
 exports.adminPage = (req, res, next) => {
-    res.render('admin/adminPage', {
-        pageTitle: 'Admin   |   ' + req.user.username
+    res.render('admin/admin-home', {
+        pageTitle: 'Admin   |   ' + req.user.username,
+        user: req.user
     });
 };
+
+exports.addContent = (req, res, next) => {
+    res.render('admin/addContent', {
+        pageTitle: `Add Content | ${req.user.username}`,
+        user: req.user
+    })
+}
+
+exports.postContent = (req, res, next) => {
+    console.log(req.body.content_type);
+    res.redirect('/admin/addContent');
+}
