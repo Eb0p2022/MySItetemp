@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const logSchema = mongoose.Schema({
-        id: {
+        user_id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         },
         date: String,
-        user: String,
+        username: String,
         actions: Array
     });
 

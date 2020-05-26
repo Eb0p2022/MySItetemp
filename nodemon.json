@@ -1,7 +1,7 @@
 {
     "ignore": [
-        "public",
-        "models",
-        "views"
+        "public/*",
+        "models/*",
+        "views/*"
     ]
 }

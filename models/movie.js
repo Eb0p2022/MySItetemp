@@ -1,19 +1,41 @@
 const mongoose = require('mongoose');
 
 const movieSchema = new mongoose.Schema({
-	title: String,
-	synopsis: String,
-	fileLink: String,
+	title: {
+		type: String,
+		required: true
+	},
+	synopsis: {
+		type: String,
+		required: true
+	},
+	downloadLink: {
+		type: String,
+		required: true
+	},
 	genres: [],
-	image: String,
-	releaseDate: Number,
+	imageLink: {
+		type: String,
+		required: false
+	},
+	releaseYear: {
+		type: Number,
+		required: true
+	},
 	ratings: {
-		IMDB: String,
-		rottenTomatoes: String, 
-		googleReviews: String,
+		IMDB: {
+			type: String,
+			required: false
+		},
 		denReviews: {
-			ratings: String,
-			text: String
+			ratings: {
+				type: Number,
+				required: false
+			},
+			review: {
+				type: String,
+				required: false
+			}
 		}
 	}
 });

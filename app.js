@@ -5,7 +5,8 @@ const 	express = require('express'),
 		mongoose = require('mongoose'),
 		passport = require('passport'),
 		path = require('path'),
-		expressSession = require('express-session');
+		expressSession = require('express-session'),
+		mongodbSessionStore = require('connect-mongodb-session')(expressSession);
 
 const 	adminRoutes = require('./routes/admin'),
 		app = express(),
@@ -13,34 +14,35 @@ const 	adminRoutes = require('./routes/admin'),
 		movieRoutes = require('./routes/movie'),
 		seedDB = require('./util/seed'),
 		PORT = process.env.PORT||'4000',
-		User = require('./models/user_model');
+		User = require('./models/user_model'),
+		dbURI = 'mongodb://localhost/the_den',
 		flash_messages = require('./util/flash_messages');
 
-//  ====    DB Setup    ====
-
+		
 //  ====	Seed Database with sample values	====
 // seedDB();
 
-console.log(__dirname);
-
 //	====	Template Setup	====
 app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.use('/public', express.static(path.join(__dirname, "public")));
+
+//	====	Session Setup and Store
+const sessionStore = new mongodbSessionStore({
+	uri: dbURI,
+	collection: 'sessions'
+});
 
 //  ====    AUTH Setup  ====
 app.use(expressSession({
 	secret: 'The Den',
 	saveUninitialized: false,
-	resave: false
+	resave: false,
+	store: sessionStore
 }));
 
-//  ====    Passport Setup  ====
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new localStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+
 
 //	====	flash messages setup	====
 app.use(flash());
@@ -51,8 +53,9 @@ app.use('/admin', adminRoutes);
 app.use(movieRoutes);
 app.use(errorController.get404);
 
+//  ====    DB Setup    ====
 mongoose
-	.connect('mongodb://localhost/the_den', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+	.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
 	.then(() => {
 		console.log('Connected to MongoDB');
 		app.listen(PORT, () => {

@@ -20,7 +20,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
         <link rel="stylesheet" href="../public/dist/css/admin-fix.css">
         <style>
-            
+
         </style>
     </head>
 
@@ -239,7 +239,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </div>
                                     <!-- /.card-header -->
                                     <!-- form start -->
-                                    <form role="form" action="/admin/addContent" method="POST">
+                                    <div id="submit_success" class="hide_content alert alert-success">
+                                        
+                                    </div>
+
+                                    <div id="submit_error" class="hide_content alert alert-danger">
+                                        
+                                    </div>
+
+                                    <form action="/admin/postContent" id="content_form" enctype="multipart/form-data"
+                                        method="POST">
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label>Content Type</label>
@@ -249,181 +258,232 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                                     <option>TV Show</option>
                                                 </select>
                                             </div>
-                                            <div id="tv_choice" class="hide_content_form">
+                                            <div id="tv_choice" class="hide_content">
                                                 <div class="form-group">
                                                     <label for="tv_title">TV Show Title</label>
-                                                    <input type="text" name="tv_title" class="form-control" id="tv_title" placeholder="Enter tv show title...">
+                                                    <input type="text" required name="tv_title" class="form-control"
+                                                        id="tv_title" placeholder="Enter tv show title...">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label for="tv_season">Season Number</label>
-                                                    <input type="number" name="tv_season" class="form-control" id="tv_season">
+                                                    <input type="number" required name="tv_season" class="form-control"
+                                                        id="tv_season">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label for="season_episode">Episode Number</label>
-                                                    <input type="number" name="season_episode" class="form-control" id="season_episode">
+                                                    <input type="number" required name="season_episode"
+                                                        class="form-control" id="season_episode">
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label for="download_link">Episode Download Link</label>
-                                                    <input type="text" name="download_link" class="form-control" id="download_link" placeholder="Enter tv show title...">
+                                                    <input type="text" required name="download_link"
+                                                        class="form-control" id="download_link"
+                                                        placeholder="Enter tv show title...">
                                                 </div>
                                             </div>
 
-                                            <div id="movie_choice" class="hide_content_form">
+                                            <div id="movie_choice" class="hide_content">
                                                 <div class="form-group">
                                                     <label for="movie_title">Movie Title</label>
-                                                    <input type="text" name="movie_title" class="form-control" id="movie_title" placeholder="Enter movie title">
+                                                    <input type="text" required name="movie_title" class="form-control"
+                                                        id="movie_title" placeholder="Enter movie title">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="movie_synopsis">Synopsis</label>
-                                                    <textarea class="form-control" name="movie_synopsis" id="movie_synopsis" placeholder="Enter summary of movie..."></textarea>
-                                                </div>
-                                                <div class="den_review">
-                                                    <div class="form-group">
-                                                        <label for="den_rating">Den Rating</label>
-                                                        <input class="form-control" type="number" name="den_rating" id="den_rating" min="0.0" max="5.0" placeholder="The Den Rating...">
-
-                                                        <label for="den_review">The Den Review</label>
-                                                        <textarea class="form-control" name="den_review" id="den_review" placeholder="Enter The Den Review of movie..."></textarea>
-                                                    </div>
+                                                    <textarea class="form-control" name="movie_synopsis"
+                                                        id="movie_synopsis"
+                                                        placeholder="Enter summary of movie..."></textarea>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="file_link">Movie Download Link</label>
-                                                    <input type="text" name="file_link" class="form-control" id="file_link" placeholder="Enter the link to download the file...">
+                                                    <label for="movieFile_link">Movie Download Link</label>
+                                                    <input type="text" required name="movieFile_link"
+                                                        class="form-control" id="movieFile_link"
+                                                        placeholder="Enter the link to download the file...">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="release_date">Release Year</label>
-                                                    <input type="number" name="release_date" class="form-control" id="release_date" placeholder="Enter movie release date...">
+                                                    <input type="number" required name="release_year"
+                                                        class="form-control" id="release_year"
+                                                        placeholder="Enter movie release date...">
                                                 </div>
                                                 <div class="form-group">
+                                                    <label for="den_rating">Den Rating</label>
+                                                    <input type="number" required name="den_rating" class="form-control" id="den_rating"
+                                                        placeholder="Enter the den rating...">
+                                                </div>
+                                                <div class="form-group genre_menu">
                                                     <label>Genre(s)</label>
-                                                    <div class="row genre_fix">
+                                                    <div class="row genre_fix" id="genres">
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="action_genre" type="checkbox">
-                                                            <label for="action_genre" class="form-check-label">Action</label>
+                                                            <input class="form-check-input" name="genre" value="Action"
+                                                                id="action_genre" type="checkbox">
+                                                            <label for="action_genre"
+                                                                class="form-check-label">Action</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="adventure_genre" type="checkbox">
-                                                            <label for="adventure_genre" class="form-check-label">Adventure</label>
+                                                            <input class="form-check-input" name="genre"
+                                                                value="Adventure" id="adventure_genre" type="checkbox">
+                                                            <label for="adventure_genre"
+                                                                class="form-check-label">Adventure</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="animation_genre" type="checkbox">
-                                                            <label for="animation_genre" class="form-check-label">Animation</label>
+                                                            <input class="form-check-input" name="genre"
+                                                                value="Animation" id="animation_genre" type="checkbox">
+                                                            <label for="animation_genre"
+                                                                class="form-check-label">Animation</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="biography_genre" type="checkbox">
-                                                            <label for="biography_genre" class="form-check-label">Biography</label>
+                                                            <input class="form-check-input" name="genre"
+                                                                value="Biography" id="biography_genre" type="checkbox">
+                                                            <label for="biography_genre"
+                                                                class="form-check-label">Biography</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="comedy_genre" type="checkbox">
-                                                            <label for="comedy_genre" class="form-check-label">Comedy</label>
+                                                            <input class="form-check-input" name="genre" value="Comedy"
+                                                                id="comedy_genre" type="checkbox">
+                                                            <label for="comedy_genre"
+                                                                class="form-check-label">Comedy</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="crime_genre" type="checkbox">
-                                                            <label for="crime_genre" class="form-check-label">Crime</label>
+                                                            <input class="form-check-input" name="genre" value="Crime"
+                                                                id="crime_genre" type="checkbox">
+                                                            <label for="crime_genre"
+                                                                class="form-check-label">Crime</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="documentary_genre" type="checkbox">
-                                                            <label for="documentary_genre" class="form-check-label">Documentary</label>
+                                                            <input class="form-check-input" name="genre"
+                                                                value="Documentary" id="documentary_genre"
+                                                                type="checkbox">
+                                                            <label for="documentary_genre"
+                                                                class="form-check-label">Documentary</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="drama_genre" type="checkbox">
-                                                            <label for="drama_genre" class="form-check-label">Drama</label>
+                                                            <input class="form-check-input" name="genre" value="Drama"
+                                                                id="drama_genre" type="checkbox">
+                                                            <label for="drama_genre"
+                                                                class="form-check-label">Drama</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="family_genre" type="checkbox">
-                                                            <label for="family_genre" class="form-check-label">Family</label>
+                                                            <input class="form-check-input" name="genre" value="Family"
+                                                                id="family_genre" type="checkbox">
+                                                            <label for="family_genre"
+                                                                class="form-check-label">Family</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="fantasy_genre" type="checkbox">
-                                                            <label for="fantasy_genre" class="form-check-label">Fantasy</label>
+                                                            <input class="form-check-input" name="genre" value="Fantasy"
+                                                                id="fantasy_genre" type="checkbox">
+                                                            <label for="fantasy_genre"
+                                                                class="form-check-label">Fantasy</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="history_genre" type="checkbox">
-                                                            <label for="history_genre" class="form-check-label">History</label>
+                                                            <input class="form-check-input" name="genre"
+                                                                value="History id=" history_genre" type="checkbox">
+                                                            <label for="history_genre"
+                                                                class="form-check-label">History</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="horror_genre" type="checkbox">
-                                                            <label for="horror_genre" class="form-check-label">Horror</label>
+                                                            <input class="form-check-input" name="genre" value="Horror"
+                                                                id="horror_genre" type="checkbox">
+                                                            <label for="horror_genre"
+                                                                class="form-check-label">Horror</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="musical_genre" type="checkbox">
-                                                            <label for="musical_genre" class="form-check-label">Musical</label>
+                                                            <input class="form-check-input" name="genre" value="Musical"
+                                                                id="musical_genre" type="checkbox">
+                                                            <label for="musical_genre"
+                                                                class="form-check-label">Musical</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="mystery_genre" type="checkbox">
-                                                            <label for="mystery_genre" class="form-check-label">Mystery</label>
+                                                            <input class="form-check-input" name="genre" value="Mystery"
+                                                                id="mystery_genre" type="checkbox">
+                                                            <label for="mystery_genre"
+                                                                class="form-check-label">Mystery</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="romance_genre" type="checkbox">
-                                                            <label for="romance_genre" class="form-check-label">Romance</label>
+                                                            <input class="form-check-input" name="genre" value="Romance"
+                                                                id="romance_genre" type="checkbox">
+                                                            <label for="romance_genre"
+                                                                class="form-check-label">Romance</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="sci_fi_genre" type="checkbox">
-                                                            <label for="sci_fi_genre" class="form-check-label">Science Fiction</label>
+                                                            <input class="form-check-input" name="genre"
+                                                                value="Science Fiction" id="sci_fi_genre"
+                                                                type="checkbox">
+                                                            <label for="sci_fi_genre" class="form-check-label">Science
+                                                                Fiction</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="sport_genre" type="checkbox">
-                                                            <label for="sport_genre" class="form-check-label">Sports</label>
+                                                            <input class="form-check-input" name="genre" value="Sports"
+                                                                id="sport_genre" type="checkbox">
+                                                            <label for="sport_genre"
+                                                                class="form-check-label">Sports</label>
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input class="form-check-input" id="thriller_genre" type="checkbox">
-                                                            <label for="thriller_genre" class="form-check-label">Thriller</label>
+                                                            <input class="form-check-input" name="genre"
+                                                                value="Thriller" id="thriller_genre" type="checkbox">
+                                                            <label for="thriller_genre"
+                                                                class="form-check-label">Thriller</label>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                
-
                                                 <div class="form-group">
+                                                    <label>Movie Poster Type</label>
+                                                    <select name="imageFileLinkType" id="imageFileLinkType" class="form-control">
+                                                        <option>--- Select poster type ---</option>
+                                                        <option>File</option>
+                                                        <option>Link</option>
+                                                    </select>
+                                                </div>
+                                                <div id="imageFileChoice" class="form-group hide_content">
                                                     <label for="poster_image">Poster Image File</label>
                                                     <div class="input-group">
                                                         <div class="custom-file">
-                                                            <input type="file" class="custom-file-input" id="poster_image">
-                                                            <label class="custom-file-label" for="poster_image">Choose file</label>
-                                                        </div>
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text" id="">Upload</span>
+                                                            <input type="file" class="custom-file-input"
+                                                                name="image_file" id="poster_image">
+                                                            <label class="custom-file-label" for="poster_image">Choose
+                                                                file</label>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            
-                                                <div class="form-group">
-                                                    <label for="file_link">Google Reviews Link</label>
-                                                    <input type="text" name="rating_googleReviews" class="form-control" id="file_link"
-                                                        placeholder="Link to the Google Reviews...">
+                                                <div id="imageLinkChoice" class="form-group hide_content">
+                                                    <label for="imageLinkChoice">Poster Link</label>
+                                                    <input type="text" name="imageFileLink" class="form-control"
+                                                        placeholder="Enter the link to the image poster...">
+                                                </div>
 
-                                                    <br>
-
-                                                    <label for="file_link">Rotten Tomatoes Link</label>
-                                                    <input type="text" name="rating_rottenTomatoes" class="form-control" id="file_link"
-                                                        placeholder="Link to the Rotten Tomatoes Reviews..">
+                                                <div class="form-group movie_reviews">
+                                                    <label for="rating_IMDB">IMDB Link</label>
+                                                    <input type="text" name="rating_IMDB" class="form-control"
+                                                        id="rating_IMDB" placeholder="Link to the IMDB Reviews..">
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- /.card-body -->
-                                
+
                                         <div class="card-footer text-center">
-                                            <button type="submit" class="btn btn-fix btn-primary">Submit</button>
+                                            <button id="content_form_submit" type="submit"
+                                                class="btn btn-fix btn-primary">Submit</button>
                                         </div>
                                     </form>
                                 </div>
@@ -451,11 +511,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- ./wrapper -->
 
-        <!-- REQUIRED SCRIPTS -->
-        <script src="../public/js/addContent.js"></script>
-
         <!-- jQuery -->
         <script src="../public/plugins/jquery/jquery.min.js"></script>
+        <!-- REQUIRED SCRIPTS -->
+        <script src="../public/js/addContent.js"></script>
         <!-- Bootstrap 4 -->
         <script src="../public/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- AdminLTE App -->
