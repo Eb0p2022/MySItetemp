@@ -111,6 +111,12 @@ exports.addContent = (req, res, next) => {
 
 exports.postContent = (req, res, next) => {
     upload(req, res, (err) => {
+        if(err){
+            res.status(500).json({
+                errors: ["Some error occurred with the file upload. Please try again."]
+            })
+            .end();
+        }
         let imageFileLink = (req.file) ? req.file.filename : req.body.imageFileLink;
         let genres = (req.body.genre) ? req.body.genre : [];
         let denRatingFixed = (req.body.den_rating) ? Number(req.body.den_rating.trim()) : '0';
@@ -129,7 +135,6 @@ exports.postContent = (req, res, next) => {
                 }
             }
         }
-        console.log(movieDoc);
         validations.validateMovie(movieDoc)
         .then(errors => {
             if(errors.length > 0){
@@ -145,24 +150,15 @@ exports.postContent = (req, res, next) => {
             Movie.create(movieDoc)
             .then(newMovie => {
                 console.log(newMovie);
-                res.status(200).end();
+                return res.status(200).end();
             })
             .catch(err => {
                 console.log(err);
             })
         })
         .catch(err => {
-            // console.log(err);
-            // res.status(500).end();
-        })
-        // console.log(movieDoc);
-        // Movie.create({movieDoc})
-        // .then(newMovie => {
-        //     res.status(200).end();
-        // })
-        // .catch(err => {
-        //     console.log(err);
-        //     res.status(500).send(JSON.stringify(err.errors)).end();
-        // })
+            console.log(err);
+            return res.status(500).end();
+        });
     });
 };
