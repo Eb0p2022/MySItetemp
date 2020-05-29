@@ -1,16 +1,24 @@
 const   Log = require('../models/log'),
-        passport = require('passport'),
         User = require('../models/user_model'),
         Movie = require('../models/movie'),
         multer = require('multer'),
         path = require('path'),
         validations = require('../util/validate'),
+        hash = require('crypto').createHash,
         fs = require('fs');
 
 const user = {
     firstName: 'David',
     lastName: 'Adeyemi',
     username: 'Den_01'
+}
+
+const loggedIn = (req, res, next) => {
+    if(req.session.isLoggedIn){
+        return next();
+    }
+    req.flash('error', 'Please log in!');
+    res.redirect('/admin/adminLogIn');
 }
 
 const downloadsDir = path.join(__dirname, '../uploads');
@@ -43,64 +51,82 @@ const upload = multer({ storage: fileStorage }).single('image_file');
 
 exports.LogIn = (req, res, next) => {
     res.render('admin/adminLogIn', {
-        pageTitle: 'Admin | Log In'
+        pageTitle: 'Admin | Log In',
+        isAuthenticated: false
     });
 };
 
 exports.postLogIn = (req, res, next) => {
-        // let username = req.user.username;
-        // req.flash('success', 'Successfully logged in! Welcome, ' + username);
-        // Log.create(
-        //     {
-        //     id: req.user._id,
-        //     date: Date(),
-        //     user: username
-        // }, (err, newLog) => {
-        //     if(err) {
-        //         console.log(err);
-        //     }else{
-        //         let action = username + ' logged in.'
-        //         newLog.actions.push(action);
-        //         newLog.save();
-        //         res.redirect('/admin/adminPage');
-        //     }
-        // });
-        res.redirect('/admin/adminPage');
+    User.findOne({
+        username: req.body.username
+    })
+    .then(user => {
+        let userPasswordHash = hash('sha256').update(req.body.password).digest('hex');
+        if (userPasswordHash === user.password){
+            req.session.user = user;
+            req.session.isLoggedIn = true;
+            req.session.save();
+            res.redirect('/admin/adminPage');
+        }
+        else{
+            req.flash('error', 'Incorrect password!');
+            res.redirect('/admin/adminLogIn');
+        }
+    })
+    .catch(err => {
+        console.log(err);
+        req.flash('error', 'Invalid user');
+        res.redirect('/admin/adminLogIn');
+    });
 };
 
-exports.newAdmin = (req, res, next) => {
+exports.newAdmin = [loggedIn, (req, res, next) => {
     res.render('admin/newAdmin', {
         pageTitle: 'Create New Admin'
     });
-};
+}];
 
 exports.createAdmin = (req, res, next) => {
+    let encyptedPass = hash.update(req.body.password).digest('hex');
     let newAdmin = {
         username: req.body.username,
         firstName: req.body.firstName,
-        lastName: req.body.lastName
+        lastName: req.body.lastName,
+        password: encyptedPass
     }
-    User.register(newAdmin, req.body.password, (err, newlyCreatedAdmin) => {
-        if(err) {
-            console.log(err.message);
-            req.flash('error', err.message);
-            return res.render('admin/newAdmin', {
-                pageTitle: 'Admin   |   Create New Admin'
-            });
+
+    User.findOne({
+        username: newAdmin.username
+    })
+    .then(user => {
+        if(user){
+            req.flash('error', 'User already exists.');
+            return res.redirect('/admin/adminLogIn');
         }
-        passport.authenticate('local')(req, res, function() {
+        User.create(newAdmin)
+        .then(newlyCreatedAdmin => {
             req.flash('success', newlyCreatedAdmin.firstName + ', your account has been created! Please log in!' + '!');
             res.redirect('/admin/adminLogIn');
+        })
+        .catch(err => {
+            console.log(err);
+            req.flash('error', 'Some error occured while creating the user. Please try again.')
+            res.redirect('/admin/newAdmin');
         });
-    });
-};
+    })
+    .catch(err => {
+        console.log(err);
+        req.flash('error', 'An error occurred. Please try again.');
+    })
+}
 
-exports.adminPage = (req, res, next) => {
+exports.adminPage = [loggedIn, (req, res, next) => {
     res.render('admin/admin-home', {
         pageTitle: 'Admin   |   ' + user.username,
-        user: user
+        user: user,
+        isAuthenticated: req.session.isLoggedIn
     });
-};
+}]
 
 exports.addContent = (req, res, next) => {
     res.render('admin/addContent', {

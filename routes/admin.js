@@ -6,12 +6,12 @@ const   adminController = require('../controllers/admin'),
 router.get('/adminLogIn', adminController.LogIn);
 router.post('/verifyLogin', adminController.postLogIn);
 
-router.get('/adminPage', adminController.adminPage);
+router.get('/adminPage', ...(adminController.adminPage));
 router.get('/addContent', adminController.addContent);
 
 router.post('/postContent', adminController.postContent);
 
-router.get('/newAdmin', adminController.newAdmin);
+router.get('/newAdmin', ...(adminController.newAdmin));
 router.post('/createAdmin', adminController.createAdmin);
 
 module.exports = router;

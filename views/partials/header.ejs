@@ -71,9 +71,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="contact.html">Contact Us</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/adminLogIn">Log In</a>
-                        </li>
+                        <% if (isAuthenticated) { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/adminPage">Admin Page</a>
+                            </li>
+                        <% } else { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/adminLogIn">Log In</a>
+                            </li>
+                        <% } %> 
                     </ul>
                 </nav>
             </div>

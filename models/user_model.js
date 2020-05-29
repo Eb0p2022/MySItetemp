@@ -14,6 +14,4 @@ const userSchema = mongoose.Schema({
     password: String
 })
 
-userSchema.plugin(passportLocalStrategy)
-
 module.exports = mongoose.model('user', userSchema)
