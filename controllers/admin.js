@@ -47,7 +47,7 @@ const fileStorage = multer.diskStorage({
         cb(null, file.originalname);
     },
 });
-const upload = multer({ storage: fileStorage }).single('image_file');
+let upload = multer({ storage: fileStorage });
 
 exports.LogIn = (req, res, next) => {
     res.render('admin/adminLogIn', {
@@ -135,7 +135,8 @@ exports.addContent = (req, res, next) => {
     });
 }
 
-exports.postContent = (req, res, next) => {
+exports.postContentMovie = (req, res, next) => {
+    upload = upload.single('movie_image_file');
     upload(req, res, (err) => {
         if(err){
             res.status(500).json({
@@ -186,5 +187,60 @@ exports.postContent = (req, res, next) => {
             console.log(err);
             return res.status(500).end();
         });
+    });
+};
+
+exports.postContentTV = (req, res, next) => {
+    upload = upload.single('tv_image_file');
+    upload(req, res, (err) => {
+        if (err) {
+            res.status(500).json({
+                errors: ["Some error occurred with the file upload. Please try again."]
+            })
+            .end();
+        }
+        let imageFileLink = (req.file) ? req.file.filename : req.body.imageFileLink;
+        let genres = (req.body.genre) ? req.body.genre : [];
+        let denRatingFixed = (req.body.den_rating) ? Number(req.body.den_rating.trim()) : '0';
+        let movieDoc = {
+            title: req.body.movie_title.trim(),
+            synopsis: req.body.movie_synopsis.trim(),
+            downloadLink: req.body.movieFile_link.trim(),
+            genres: genres,
+            imageLink: imageFileLink,
+            releaseYear: Number(req.body.release_year.trim()),
+            ratings: {
+                IMDB: req.body.rating_IMDB.trim(),
+                denReviews: {
+                    ratings: denRatingFixed,
+                    review: req.body.den_review
+                }
+            }
+        }
+        validations.validateMovie(movieDoc)
+            .then(errors => {
+                if (errors.length > 0) {
+                    // let json_errors = JSON.stringify({
+                    //     errors: errors
+                    // });
+                    // console.log(json_errors);
+                    console.log(errors);
+                    return res.status(500).json({
+                        errors: errors
+                    });
+                }
+                Movie.create(movieDoc)
+                    .then(newMovie => {
+                        console.log(newMovie);
+                        return res.status(200).end();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            })
+            .catch(err => {
+                console.log(err);
+                return res.status(500).end();
+            });
     });
 };
