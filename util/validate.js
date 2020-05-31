@@ -25,7 +25,30 @@ class Validations{
                 };
 
                 if (Number(movieObj.releaseYear) < 1888) {
-                    errors.push(`Supplied year: ${movieObj.releaseYear} is invalid.`)
+                    errors.push(`Supplied year: ${movieObj.releaseYear} is an invalid year for tv shows.`)
+                }
+            }
+            resolve(errors);
+        });
+    }
+
+    async validateTVShow(tvObj){
+        return new Promise((resolve, reject) => {
+            let errors = []
+
+            if (!tvObj.title) {
+                errors.push('Empty tv show title.');
+            }
+
+            if (tvObj.releaseYear) {
+                let today = new Date();
+                let currentYear = today.getFullYear();
+                if (Number(tvObj.releaseYear) > currentYear) {
+                    errors.push(`Supplied release date: "${tvObj.releaseYear}" is set in future.`);
+                };
+
+                if (Number(tvObj.releaseYear) < 1888) {
+                    errors.push(`Please supply a release year greater than 1888.`);
                 }
             }
             resolve(errors);

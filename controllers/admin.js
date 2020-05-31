@@ -5,6 +5,7 @@ const   Log = require('../models/log'),
         path = require('path'),
         validations = require('../util/validate'),
         hash = require('crypto').createHash,
+        TV = require('../models/tv-show'),
         fs = require('fs');
 
 const user = {
@@ -123,21 +124,21 @@ exports.createAdmin = (req, res, next) => {
 exports.adminPage = [loggedIn, (req, res, next) => {
     res.render('admin/admin-home', {
         pageTitle: 'Admin   |   ' + user.username,
-        user: user,
+        user: req.session.user,
         isAuthenticated: req.session.isLoggedIn
     });
 }]
 
-exports.addContent = (req, res, next) => {
+exports.addContent = [loggedIn, (req, res, next) => {
     res.render('admin/addContent', {
         pageTitle: `Add Content | ${user.username}`,
-        user: user
+        user: req.session.user
     });
-}
+}]
 
 exports.postContentMovie = (req, res, next) => {
-    upload = upload.single('movie_image_file');
-    upload(req, res, (err) => {
+    const movie_upload = upload.single('movie_image_file');
+    movie_upload(req, res, (err) => {
         if(err){
             res.status(500).json({
                 errors: ["Some error occurred with the file upload. Please try again."]
@@ -146,7 +147,7 @@ exports.postContentMovie = (req, res, next) => {
         }
         let imageFileLink = (req.file) ? req.file.filename : req.body.imageFileLink;
         let genres = (req.body.genre) ? req.body.genre : [];
-        let denRatingFixed = (req.body.den_rating) ? Number(req.body.den_rating.trim()) : '0';
+        let denRatingFixed = (req.body.movie_den_rating) ? Number(req.body.movie_den_rating.trim()) : '0';
         let movieDoc = {
             title: req.body.movie_title.trim(),
             synopsis: req.body.movie_synopsis.trim(),
@@ -155,7 +156,7 @@ exports.postContentMovie = (req, res, next) => {
             imageLink: imageFileLink,
             releaseYear: Number(req.body.release_year.trim()),
             ratings: {
-                IMDB: req.body.rating_IMDB.trim(),
+                IMDB: req.body.movie_rating_IMDB.trim(),
                 denReviews: {
                     ratings: denRatingFixed,
                     review: req.body.den_review
@@ -165,10 +166,6 @@ exports.postContentMovie = (req, res, next) => {
         validations.validateMovie(movieDoc)
         .then(errors => {
             if(errors.length > 0){
-                // let json_errors = JSON.stringify({
-                //     errors: errors
-                // });
-                // console.log(json_errors);
                 console.log(errors);
                 return res.status(500).json({
                     errors: errors
@@ -191,47 +188,41 @@ exports.postContentMovie = (req, res, next) => {
 };
 
 exports.postContentTV = (req, res, next) => {
-    upload = upload.single('tv_image_file');
-    upload(req, res, (err) => {
+    const tv_upload = upload.single('tv_image_file');
+    tv_upload(req, res, (err) => {
         if (err) {
             res.status(500).json({
                 errors: ["Some error occurred with the file upload. Please try again."]
             })
             .end();
         }
-        let imageFileLink = (req.file) ? req.file.filename : req.body.imageFileLink;
+        let imageFileLink = (req.file) ? req.file.filename : req.body.tvFileLink;
         let genres = (req.body.genre) ? req.body.genre : [];
-        let denRatingFixed = (req.body.den_rating) ? Number(req.body.den_rating.trim()) : '0';
-        let movieDoc = {
-            title: req.body.movie_title.trim(),
-            synopsis: req.body.movie_synopsis.trim(),
-            downloadLink: req.body.movieFile_link.trim(),
+        let denRatingFixed = (req.body.tv_den_rating) ? Number(req.body.tv_den_rating.trim()) : '0';
+        let tvDoc = {
+            title: req.body.tv_title.trim(),
+            synopsis: req.body.tv_synopsis.trim(),
             genres: genres,
             imageLink: imageFileLink,
-            releaseYear: Number(req.body.release_year.trim()),
+            releaseYear: Number(req.body.tv_release_year.trim()),
             ratings: {
-                IMDB: req.body.rating_IMDB.trim(),
+                IMDB: req.body.tv_rating_IMDB.trim(),
                 denReviews: {
-                    ratings: denRatingFixed,
-                    review: req.body.den_review
+                    ratings: denRatingFixed
                 }
             }
-        }
-        validations.validateMovie(movieDoc)
+        };
+        validations.validateTVShow(tvDoc)
             .then(errors => {
                 if (errors.length > 0) {
-                    // let json_errors = JSON.stringify({
-                    //     errors: errors
-                    // });
-                    // console.log(json_errors);
                     console.log(errors);
                     return res.status(500).json({
                         errors: errors
                     });
                 }
-                Movie.create(movieDoc)
-                    .then(newMovie => {
-                        console.log(newMovie);
+                TV.create(tvDoc)
+                    .then(newShow => {
+                        console.log(newShow);
                         return res.status(200).end();
                     })
                     .catch(err => {
@@ -244,3 +235,17 @@ exports.postContentTV = (req, res, next) => {
             });
     });
 };
+
+exports.getUpdate = [loggedIn, (req, res, next) => {
+    res.render('admin/contentUpdate', {
+        pageTitle: 'Update Movie / TV Show',
+        user: req.session.user
+    })
+}]
+
+exports.getMovieUpdate = [loggedIn, (req, res, next) => {
+    res.render('admin/updateMovie', {
+        pageTitle: 'Update Movie',
+        user: req.session.user
+    });
+}]

@@ -41,7 +41,7 @@
                                     <form action="/admin/postContent" id="content_form" enctype="multipart/form-data"
                                         method="POST">
                                         <div class="card-body">
-                                            <div class="form-group">
+                                            <div class="form-group content_choice">
                                                 <label>Content Type</label>
                                                 <select name="content_type" id="content_type" class="form-control">
                                                     <option>--- Select content type ---</option>
@@ -57,22 +57,27 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="tv_season">Season Number</label>
-                                                    <input type="number" required name="tv_season" class="form-control"
-                                                        id="tv_season">
+                                                    <label for="tv_synopsis">Synopsis</label>
+                                                    <textarea class="form-control" name="tv_synopsis" id="tv_synopsis"
+                                                        placeholder="Enter summary of tv show..."></textarea>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="season_episode">Episode Number</label>
-                                                    <input type="number" required name="season_episode"
-                                                        class="form-control" id="season_episode">
+                                                    <label for="tv_release_year">TV Show Release Year</label>
+                                                    <input type="number" required name="tv_release_year" class="form-control" id="tv_release_year"
+                                                        placeholder="Enter tv show release date...">
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="download_link">Episode Download Link</label>
-                                                    <input type="text" required name="download_link"
-                                                        class="form-control" id="download_link"
-                                                        placeholder="Enter tv show title...">
+                                                    <label for="tv_den_rating">Den Rating</label>
+                                                    <input type="number" required name="tv_den_rating" class="form-control" id="tv_den_rating"
+                                                        placeholder="Enter the den rating...">
+                                                </div>
+
+                                                <div class="form-group tv_reviews">
+                                                    <label for="tv_rating_IMDB">IMDB Link</label>
+                                                    <input type="text" name="tv_rating_IMDB" class="form-control" id="tv_rating_IMDB"
+                                                        placeholder="Link to the IMDB Reviews..">
                                                 </div>
 
                                                 <div class="form-group genre_menu">
@@ -181,7 +186,7 @@
                                                 </div>
 
                                                 <div id="tvFileChoice" class="form-group hide_content">
-                                                    <label for="poster_image">Poster Image File</label>
+                                                    <label for="poster_image">TV Poster File</label>
                                                     <div class="input-group">
                                                         <div class="custom-file">
                                                             <input type="file" class="custom-file-input" name="tv_image_file" id="poster_image">
@@ -189,6 +194,11 @@
                                                                 file</label>
                                                         </div>
                                                     </div>
+                                                </div>
+
+                                                <div id="tvLinkChoice" class="form-group hide_content">
+                                                    <label for="tvLinkChoice">TV Poster Link</label>
+                                                    <input type="text" name="tvFileLink" class="form-control" placeholder="Enter the link to the tv poster...">
                                                 </div>
                                             </div>
 
@@ -217,8 +227,8 @@
                                                         placeholder="Enter movie release date...">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="den_rating">Den Rating</label>
-                                                    <input type="number" required name="den_rating" class="form-control" id="den_rating"
+                                                    <label for="movie_den_rating">Den Rating</label>
+                                                    <input type="number" required name="movie_den_rating" class="form-control" id="movie_den_rating"
                                                         placeholder="Enter the den rating...">
                                                 </div>
                                                 <div class="form-group genre_menu">
@@ -380,9 +390,9 @@
                                                 </div>
 
                                                 <div class="form-group movie_reviews">
-                                                    <label for="rating_IMDB">IMDB Link</label>
-                                                    <input type="text" name="rating_IMDB" class="form-control"
-                                                        id="rating_IMDB" placeholder="Link to the IMDB Reviews..">
+                                                    <label for="movie_rating_IMDB">IMDB Link</label>
+                                                    <input type="text" name="movie_rating_IMDB" class="form-control"
+                                                        id="movie_rating_IMDB" placeholder="Link to the IMDB Reviews..">
                                                 </div>
                                             </div>
                                         </div>
@@ -403,5 +413,6 @@
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
+<script src="../public/js/addContent.js"></script>
 
 <%- include ('admin-partials/adminFooter') -%> 
