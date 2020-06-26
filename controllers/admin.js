@@ -83,8 +83,7 @@ exports.postLogIn = (req, res, next) => {
 
 exports.newAdmin = [loggedIn, (req, res, next) => {
     res.render('admin/newAdmin', {
-        pageTitle: 'Create New Admin',
-        isAuthenticated: req.session.isLoggedIn
+        pageTitle: 'Create New Admin'
     });
 }];
 
@@ -250,23 +249,7 @@ exports.postSearchMedia = (req, res, next) => {
     let mediaType = req.params.mediaType;
     let searchParam = req.params.searchParam;
 
-    if(mediaType == 'Movie'){
-        Movie.find()
-        .then(res => {
-            res = res.filter(show => {
-                return show.title.startsWith(searchParam, 0);
-            }).sort((a, b) => {
-                if(a.title < b.title){
-                    return -1
-                } else if (a.title == b.title){
-                    return 0
-                } else {
-                    return 1
-                }
-            })
-            console.log(res);
-        })
-        .catch(err => console.log(err))
+    if(mediaType == 'TV'){
+        
     }
-    next();
 }
