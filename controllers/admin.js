@@ -4,7 +4,7 @@ const   Log = require('../models/log'),
         multer = require('multer'),
         path = require('path'),
         validations = require('../util/validate'),
-        hash = require('crypto').createHash,
+        crypto = require('crypto'),
         TV = require('../models/tv-show'),
         fs = require('fs');
 
@@ -62,7 +62,7 @@ exports.postLogIn = (req, res, next) => {
         username: req.body.username
     })
     .then(user => {
-        let userPasswordHash = hash('sha256').update(req.body.password).digest('hex');
+        let userPasswordHash = crypto.createHash('sha256').update(req.body.password).digest('hex');
         if (userPasswordHash === user.password){
             req.session.user = user;
             req.session.isLoggedIn = true;
@@ -88,6 +88,8 @@ exports.newAdmin = [loggedIn, (req, res, next) => {
 }];
 
 exports.createAdmin = (req, res, next) => {
+    let hash = crypto.createHash('sha256');
+    console.log(req.body.password)
     let encyptedPass = hash.update(req.body.password).digest('hex');
     let newAdmin = {
         username: req.body.username,
