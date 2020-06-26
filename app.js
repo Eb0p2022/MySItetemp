@@ -1,9 +1,7 @@
 const 	express = require('express'),
 		bodyParser = require('body-parser'),
 		flash = require('connect-flash'),
-		localStrategy = require('passport-local'),
 		mongoose = require('mongoose'),
-		passport = require('passport'),
 		path = require('path'),
 		expressSession = require('express-session'),
 		mongodbSessionStore = require('connect-mongodb-session')(expressSession);

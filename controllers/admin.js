@@ -83,7 +83,8 @@ exports.postLogIn = (req, res, next) => {
 
 exports.newAdmin = [loggedIn, (req, res, next) => {
     res.render('admin/newAdmin', {
-        pageTitle: 'Create New Admin'
+        pageTitle: 'Create New Admin',
+        isAuthenticated: req.session.isLoggedIn
     });
 }];
 
@@ -138,7 +139,7 @@ exports.addContent = [loggedIn, (req, res, next) => {
 
 exports.postContentMovie = (req, res, next) => {
     const movie_upload = upload.single('movie_image_file');
-    movie_upload(req, res, (err) => {
+    movie_upload(req, res, async (err) => {
         if(err){
             res.status(500).json({
                 errors: ["Some error occurred with the file upload. Please try again."]
@@ -163,27 +164,22 @@ exports.postContentMovie = (req, res, next) => {
                 }
             }
         }
-        validations.validateMovie(movieDoc)
-        .then(errors => {
-            if(errors.length > 0){
+
+        try {
+            let errors = await validations.validateMovie(movieDoc);
+            if (errors.length > 0) {
                 console.log(errors);
                 return res.status(500).json({
                     errors: errors
                 });
             }
-            Movie.create(movieDoc)
-            .then(newMovie => {
-                console.log(newMovie);
-                return res.status(200).end();
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        })
-        .catch(err => {
-            console.log(err);
+            let newMovie = await Movie.create(movieDoc);
+            console.log(newMovie);
+            return res.status(200).end();
+        } catch (error) {
+            console.log(error);
             return res.status(500).end();
-        });
+        }
     });
 };
 
@@ -249,3 +245,28 @@ exports.getMovieUpdate = [loggedIn, (req, res, next) => {
         user: req.session.user
     });
 }]
+
+exports.postSearchMedia = (req, res, next) => {
+    let mediaType = req.params.mediaType;
+    let searchParam = req.params.searchParam;
+
+    if(mediaType == 'Movie'){
+        Movie.find()
+        .then(res => {
+            res = res.filter(show => {
+                return show.title.startsWith(searchParam, 0);
+            }).sort((a, b) => {
+                if(a.title < b.title){
+                    return -1
+                } else if (a.title == b.title){
+                    return 0
+                } else {
+                    return 1
+                }
+            })
+            console.log(res);
+        })
+        .catch(err => console.log(err))
+    }
+    next();
+}

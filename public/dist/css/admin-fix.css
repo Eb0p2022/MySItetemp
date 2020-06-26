@@ -1,0 +1,43 @@
+.btn-fix{
+    border: none;
+    background-color: #261727;
+}
+
+.btn-fix:hover{
+    background-color: #161120;
+}
+
+.genre_fix{
+    margin: 0 30px;
+}
+
+.hide_content{
+    display: none;
+}
+
+.update_choice{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px;
+    padding: 0 20px;
+}
+
+.update{
+    padding: 20px 20px;
+    text-align: center;
+}
+
+.update_btn{
+    margin: 0;
+    padding: 10px 30px;
+    background-color: #261727;
+}
+
+.update_btn:hover{
+    background-color: #0e0b14;
+}
+
+.close_fix:hover{
+    cursor: pointer;
+}

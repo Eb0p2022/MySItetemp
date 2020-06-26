@@ -1,6 +1,5 @@
 const   adminController = require('../controllers/admin'),
         express = require('express'),
-        passport = require('passport'),
         router = express.Router();
 
 router.get('/adminLogIn', adminController.LogIn);
@@ -17,5 +16,7 @@ router.get('/updateContent/movie', ...(adminController.getMovieUpdate));
 
 router.get('/newAdmin', ...(adminController.newAdmin));
 router.post('/createAdmin', adminController.createAdmin);
+
+router.post('/searchMedia/:mediaType/:searchParam', adminController.postSearchMedia);
 
 module.exports = router;

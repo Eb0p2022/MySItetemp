@@ -5,5 +5,11 @@ const episodeSchema = mongoose.Schema({
         type: String,
         required: false
     },
-    
+    number: {
+        type: Number,
+        required: true
+    },
+    downloadLink: {
+        
+    }
 })
