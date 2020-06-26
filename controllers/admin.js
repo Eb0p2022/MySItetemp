@@ -248,7 +248,8 @@ exports.getUpdate = [loggedIn, (req, res, next) => {
 exports.getMovieUpdate = [loggedIn, (req, res, next) => {
     res.render('admin/updateMovie', {
         pageTitle: 'Update Movie',
-        user: req.session.user
+        user: req.session.user,
+        edit: false
     });
 }]
 
@@ -256,6 +257,7 @@ exports.postSearchMedia = (req, res, next) => {
     let mediaType = req.params.mediaType;
     let searchParam = req.params.searchParam;
 
+    let dbName;
     if(mediaType == 'TV'){
         
     }
