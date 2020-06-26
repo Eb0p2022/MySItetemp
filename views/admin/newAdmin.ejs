@@ -19,13 +19,13 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
               </div>
-              <form class="user" action="/admin/createAdmin" method="POST">
+              <form class="user" action="/admin/createAdmin" method="POST" id="newAdminForm">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <input type="text" name="firstName" required class="form-control form-control-user" id="exampleFirstName" placeholder="First Name">
                   </div>
                   <div class="col-sm-6">
-                    <input type="text" name="lastName" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name">
+                    <input type="text" name="lastName" class="form-control form-control-user" id="lastName" placeholder="Last Name">
                   </div>
                 </div>
                 <div class="form-group">
@@ -33,16 +33,16 @@
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input onkeyup="test()" type="password" required name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                    <input onkeyup="test()" type="password" required name="password" class="form-control form-control-user" id="inputPassword" placeholder="Password">
                   </div>
                   <div class="col-sm-6">
-                    <input onkeyup="test()" type="password" required class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
+                    <input onkeyup="test()" type="password" required class="form-control form-control-user" id="repeatPassword" placeholder="Repeat Password">
                   </div>
                 </div>
                 <div id="passwords" style="display: none;">
                   
                 </div>
-                <button type="submit" class="btn btn-primary btn-user btn-block">
+                <button id="create-submit" type="submit" class="btn btn-primary btn-user btn-block">
                   Register Account
                 </button>
                 <!-- <hr>
@@ -69,6 +69,7 @@
   </div>
 
   <!-- Bootstrap core JavaScript-->
+  <script src="../public/js/newAdmin.js"></script>
   <script src="../public/vendor/jquery/jquery.min.js"></script>
   <script src="../public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
