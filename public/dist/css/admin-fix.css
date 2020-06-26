@@ -41,3 +41,13 @@
 .close_fix:hover{
     cursor: pointer;
 }
+
+.logout{
+    margin-top: 100px;
+    background-color: #261727;
+    border-radius: 10px;
+}
+.logout:hover{
+    background-color: #161120;
+    border-radius: 10px;
+}

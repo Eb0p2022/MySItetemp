@@ -81,6 +81,12 @@ exports.postLogIn = (req, res, next) => {
     });
 };
 
+exports.logOut = (req, res, next) => {
+    req.session.isLoggedIn = false;
+    req.session.destroy();
+    res.redirect('/');
+}
+
 exports.newAdmin = [loggedIn, (req, res, next) => {
     res.render('admin/newAdmin', {
         pageTitle: 'Create New Admin'
@@ -89,7 +95,6 @@ exports.newAdmin = [loggedIn, (req, res, next) => {
 
 exports.createAdmin = (req, res, next) => {
     let hash = crypto.createHash('sha256');
-    console.log(req.body.password)
     let encyptedPass = hash.update(req.body.password).digest('hex');
     let newAdmin = {
         username: req.body.username,

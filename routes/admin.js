@@ -17,6 +17,8 @@ router.get('/updateContent/movie', ...(adminController.getMovieUpdate));
 router.get('/newAdmin', ...(adminController.newAdmin));
 router.post('/createAdmin', adminController.createAdmin);
 
+router.get('/logOut', adminController.logOut);
+
 router.post('/searchMedia/:mediaType/:searchParam', adminController.postSearchMedia);
 
 module.exports = router;
