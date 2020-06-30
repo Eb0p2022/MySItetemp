@@ -5,6 +5,7 @@ const   Log = require('../../models/log'),
         validations = require('../../util/validate'),
         crypto = require('crypto'),
         TV = require('../../models/tv-show'),
+        MovieDB = require('../../util/movie_api_queries'),
         fs = require('fs');
 
 const downloadsDir = path.join(__dirname, '../uploads');
@@ -35,7 +36,16 @@ const fileStorage = multer.diskStorage({
 });
 let upload = multer({ storage: fileStorage });
 
-exports.postTVSearch = (req, res, next) => {
+exports.postTVSearch = async (req, res, next) => {
     res.status(200);
-    res.end();
+    let response = await MovieDB.searchTV(req.params.searchParam);
+    let payload = {
+        error: ''
+    }
+    if(response.status == 200 && response.data.results.length != 0){
+        payload.results = response.data
+    } else {
+        payload.error = 'The resource you requested could not be found.'
+    }
+    res.json(payload);
 }

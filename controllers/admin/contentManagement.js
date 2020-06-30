@@ -47,9 +47,10 @@ exports.adminPage = [loggedIn, (req, res, next) => {
 }]
 
 exports.addContent = [loggedIn, (req, res, next) => {
+    let loggedInUser = req.session.user
     res.render('admin/addContent', {
-        pageTitle: `Add Content | ${user.username}`,
-        user: req.session.user
+        pageTitle: `Add Content | ${loggedInUser.username}`,
+        user: loggedInUser
     });
 }]
 

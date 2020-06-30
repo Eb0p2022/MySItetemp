@@ -40,16 +40,17 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                             <li><div id="movie_filter">Movie</div></li>
-                                            <li><div id="tv_filter">TV Show</div></li>
+                                            <li><div id="tv_filter">TV</div></li>
                                         </ul>
                                     </div>
-                                    <input type="hidden" name="search_param" value="all" id="search_param">
-                                    <input type="text" class="form-control" name="x" placeholder="Search media...">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" id="submit-search" type="button"><img src="../public/icon-fonts/search.png" alt=""></button>
-                                    </span>
+                                    <input type="text" class="form-control" id="search_param" placeholder="Search media...">
+                                    <div class="input-group-btn">
+                                        <button id="submit_search_2" class="btn btn-default"><i id="submit_search" class="fa fa-search"></i></button>
+                                    </div>
 
-                                    <div class="hide_content">
+                                    
+                                    
+                                    <!-- <div class="hide_content">
                                         <form action="/admin/updateContent" id="content_form" enctype="multipart/form-data" method="POST">
                                             <div class="card-body">
                                                 <div id="tv_choice" class="hide_content">
@@ -371,13 +372,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- /.card-body -->
                                         
                                             <div class="card-footer text-center">
                                                 <button id="content_form_submit" type="submit" class="btn btn-fix btn-primary">Submit</button>
                                             </div>
-                                        </form>
-                                    </div>
+                                        </form> -->
                                 </div>
                             </div>
                         </div>
@@ -388,8 +387,14 @@
                                 <div class="card-header">
                                     <h3 class="card-title">Search Results</h3>                    
                                 </div>
-                                <!-- /.card-header -->
-                                <div class="card-body table-responsive p-0">
+                                <div id="submit_success" class="hide_content alert alert-success">
+                                
+                                </div>
+                                
+                                <div id="submit_error" class="hide_content alert alert-danger">
+                                
+                                </div>
+                                <!-- <div class="card-body table-responsive p-0">
                                     <table class="table table-hover text-nowrap">
                                         <thead>
                                             <tr>
@@ -407,38 +412,12 @@
                                                 <td>11-7-2014</td>
                                                 <td><span class="tag tag-success">Approved</span></td>
                                                 <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td><a href="#"><button class="btn btn-default btn-table">Select</button></a></td>
-                                            </tr>
-                                            <tr>
-                                                <td>219</td>
-                                                <td>Alexander Pierce</td>
-                                                <td>11-7-2014</td>
-                                                <td><span class="tag tag-warning">Pending</span></td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td><button class="btn btn-default btn-table">Select</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>657</td>
-                                                <td>Bob Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td><span class="tag tag-primary">Approved</span></td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td><button class="btn btn-default btn-table">Select</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>175</td>
-                                                <td>Mike Doe</td>
-                                                <td>11-7-2014</td>
-                                                <td><span class="tag tag-danger">Denied</span></td>
-                                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                                <td><button class="btn btn-default btn-table">Select</button></td>
+                                                <td><a href="#"><button id="" class="btn btn-default btn-table">Select</button></a></td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
-                                <!-- /.card-body -->
+                                </div> -->
                             </div>
-                            <!-- /.card -->
                         </div>
                     </div>
                 </div>

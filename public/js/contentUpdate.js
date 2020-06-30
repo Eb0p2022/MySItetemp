@@ -1,3 +1,5 @@
+const mediaFilter = document.getElementById('mediaFilterBtn');
+
 const resetNotifs = () => {
     const success_field = document.querySelector('#submit_success');
     const error_field = document.querySelector('#submit_error');
@@ -16,40 +18,76 @@ const resetNotifs = () => {
     error_field.classList.add('hide_content');
 }
 
+let notify = (html_element, data) => {
+    data.forEach(message => {
+        html_element.innerHTML += `<p>${message}</p>`;
+    })
+    html_element.classList.remove('hide_content');
+};
+
 const setMediaFilterText = (filterText) => {
-    let mediaFilter = document.getElementById('mediaFilterBtn');
     mediaFilter.innerText = filterText;
 }
 
-const fetchSearchResults = (content_type) => {
-    console.log('Reached');
-    // let searchParam = 'la';
-    // const route = `/admin/searchMedia/${content_type}/${searchParam}`
-    // fetch(route, {
-    //     method: 'POST'   
-    // })
-    // .then(response => response.json())
-    // .then(data => console.log(data))
-    // .catch(err => console.log(err))
+const fetchSearchResults = (searchParams) => {
+    const success_field = document.querySelector('#submit_success');
+    const error_field = document.querySelector('#submit_error');
+    resetNotifs();
+    let mediaType;
+
+    if (searchParams.mediaParam === 'Media Choice'){
+        notify(error_field, ['Filter type not indicated.']);
+        return;
+    } 
+    const route = `/admin/search${searchParams.mediaParam}/${searchParams.query}`
+    fetch(route, {
+        method: 'GET'   
+    })
+    .then(response => {
+        if(response.status === 200){
+            return response.json();
+        }
+    })
+    .then(data => {
+        if(data.error !== ''){
+            notify(error_field, [(data.error)]);
+            return;
+        }
+        notify(success_field, data.results.results)
+    })
+    .catch(err => console.log(err))
 }
 
-const initializeSearch = () => {
-    
+const fetchSearchParams = () => {
+    const searchParam = document.getElementById('search_param');
+    return {
+        mediaParam: mediaFilter.innerText.trim(),
+        query: searchParam.value.trim()
+    }
 }
 
 document.addEventListener('click', ev => {
     let element = ev.target;
+    if (element.classList.contains('close')) {
+        element.parentElement.classList.add('hide_content');
+        return;
+    }
     switch (element.id) {
         case 'movie_filter':
             setMediaFilterText('Movie')
             break;
         
         case 'tv_filter':
-            setMediaFilterText('TV Show')
+            setMediaFilterText('TV')
             break;
 
-        case 'submit-search':
-            initializeSearch();
+        case 'search_param':
+            resetNotifs();
+            break;
+
+        case 'submit_search':
+        case 'submit_search_2':
+            fetchSearchResults(fetchSearchParams());
             break;
 
         default:

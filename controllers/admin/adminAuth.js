@@ -87,11 +87,3 @@ exports.createAdmin = (req, res, next) => {
             req.flash('error', 'An error occurred. Please try again.');
         })
 }
-
-exports.adminPage = [loggedIn, (req, res, next) => {
-    res.render('admin/admin-home', {
-        pageTitle: 'Admin   |   ' + user.username,
-        user: req.session.user,
-        isAuthenticated: req.session.isLoggedIn
-    });
-}]
