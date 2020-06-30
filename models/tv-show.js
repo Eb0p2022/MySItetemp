@@ -15,7 +15,13 @@ const tvSchema = mongoose.Schema({
             ratings: Number,
             review: String
         }
-    }
+    }, 
+    episodes: [{
+        episode_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Episode'
+        }
+    }]
 })
 
 module.exports = mongoose.model('tv', tvSchema);

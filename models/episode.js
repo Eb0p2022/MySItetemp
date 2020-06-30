@@ -10,6 +10,20 @@ const episodeSchema = mongoose.Schema({
         required: true
     },
     downloadLink: {
-        
+        type: String,
+        required: true
+    },
+    tv_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tv"
+    },
+    reviews: {
+        IMDB: String,
+        denReviews: {
+            ratings: Number,
+            review: String
+        }
     }
 })
+
+module.exports = mongoose.model('episode', episodeSchema);

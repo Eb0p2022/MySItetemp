@@ -17,8 +17,9 @@ const 	adminRoutes = require('./routes/admin'),
 		flash_messages = require('./util/flash_messages');
 
 		
-//  ====	Seed Database with sample values	====
-// seedDB();
+// ====	Seed Database with sample values	====
+// seedDB.seedMovies();
+// seedDB.seedTVShow();
 
 //	====	Template Setup	====
 app.use(bodyParser.urlencoded({ extended: true }));

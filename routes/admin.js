@@ -1,24 +1,25 @@
-const   adminController = require('../controllers/admin'),
+const   adminUtil = require('../controllers/admin/adminUtil'),
+        adminAuth = require('../controllers/admin/adminAuth'),
+        adminContent = require('../controllers/admin/contentManagement')
         express = require('express'),
         router = express.Router();
 
-router.get('/adminLogIn', adminController.LogIn);
-router.post('/verifyLogin', adminController.postLogIn);
+router.get('/adminLogIn', adminAuth.LogIn);
+router.post('/verifyLogin', adminAuth.postLogIn);
+router.get('/logOut', adminAuth.logOut);
 
-router.get('/adminPage', ...(adminController.adminPage));
-router.get('/addContent', ...(adminController.addContent));
+router.get('/newAdmin', ...(adminAuth.newAdmin));
+router.post('/createAdmin', adminAuth.createAdmin);
 
-router.post('/postContent/movie', adminController.postContentMovie);
-router.post('/postContent/tv', adminController.postContentTV);
+router.get('/adminPage', ...(adminContent.adminPage));
+router.get('/addContent', ...(adminContent.addContent));
 
-router.get('/updateContent', ...(adminController.getUpdate));
-router.get('/updateContent/movie', ...(adminController.getMovieUpdate));
+router.post('/postContent/movie', adminContent.postContentMovie);
+router.post('/postContent/tv', adminContent.postContentTV);
 
-router.get('/newAdmin', ...(adminController.newAdmin));
-router.post('/createAdmin', adminController.createAdmin);
+router.get('/updateContent', ...(adminContent.getUpdate));
+router.get('/updateContent/movie', ...(adminContent.getMovieUpdate));
 
-router.get('/logOut', adminController.logOut);
-
-router.post('/searchMedia/:mediaType/:searchParam', adminController.postSearchMedia);
+router.get('/searchTV/:searchParam', adminUtil.postTVSearch);
 
 module.exports = router;

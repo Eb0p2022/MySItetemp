@@ -1,26 +1,13 @@
-const   Log = require('../models/log'),
-        User = require('../models/user_model'),
-        Movie = require('../models/movie'),
-        multer = require('multer'),
-        path = require('path'),
-        validations = require('../util/validate'),
-        crypto = require('crypto'),
-        TV = require('../models/tv-show'),
-        fs = require('fs');
+const Log = require('../../models/log'),
+    Movie = require('../../models/movie'),
+    User = require('../../models/user_model'),
+    multer = require('multer'),
+    path = require('path'),
+    validations = require('../../util/validate'),
+    TV = require('../../models/tv-show'),
+    fs = require('fs');
 
-const user = {
-    firstName: 'David',
-    lastName: 'Adeyemi',
-    username: 'Den_01'
-}
-
-const loggedIn = (req, res, next) => {
-    if(req.session.isLoggedIn){
-        return next();
-    }
-    req.flash('error', 'Please log in!');
-    res.redirect('/admin/adminLogIn');
-}
+const loggedIn = require('../middlewares/loggedIn')
 
 const downloadsDir = path.join(__dirname, '../uploads');
 const imageDir = path.join(downloadsDir, 'images');
@@ -50,88 +37,11 @@ const fileStorage = multer.diskStorage({
 });
 let upload = multer({ storage: fileStorage });
 
-exports.LogIn = (req, res, next) => {
-    res.render('admin/adminLogIn', {
-        pageTitle: 'Admin | Log In',
-        isAuthenticated: false
-    });
-};
-
-exports.postLogIn = (req, res, next) => {
-    User.findOne({
-        username: req.body.username
-    })
-    .then(user => {
-        let userPasswordHash = crypto.createHash('sha256').update(req.body.password).digest('hex');
-        if (userPasswordHash === user.password){
-            req.session.user = user;
-            req.session.isLoggedIn = true;
-            req.session.save();
-            res.redirect('/admin/adminPage');
-        }
-        else{
-            req.flash('error', 'Incorrect password!');
-            res.redirect('/admin/adminLogIn');
-        }
-    })
-    .catch(err => {
-        console.log(err);
-        req.flash('error', 'Invalid user');
-        res.redirect('/admin/adminLogIn');
-    });
-};
-
-exports.logOut = (req, res, next) => {
-    req.session.isLoggedIn = false;
-    req.session.destroy();
-    res.redirect('/');
-}
-
-exports.newAdmin = [loggedIn, (req, res, next) => {
-    res.render('admin/newAdmin', {
-        pageTitle: 'Create New Admin'
-    });
-}];
-
-exports.createAdmin = (req, res, next) => {
-    let hash = crypto.createHash('sha256');
-    let encyptedPass = hash.update(req.body.password).digest('hex');
-    let newAdmin = {
-        username: req.body.username,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        password: encyptedPass
-    }
-
-    User.findOne({
-        username: newAdmin.username
-    })
-    .then(user => {
-        if(user){
-            req.flash('error', 'User already exists.');
-            return res.redirect('/admin/adminLogIn');
-        }
-        User.create(newAdmin)
-        .then(newlyCreatedAdmin => {
-            req.flash('success', newlyCreatedAdmin.firstName + ', your account has been created! Please log in!' + '!');
-            res.redirect('/admin/adminLogIn');
-        })
-        .catch(err => {
-            console.log(err);
-            req.flash('error', 'Some error occured while creating the user. Please try again.')
-            res.redirect('/admin/newAdmin');
-        });
-    })
-    .catch(err => {
-        console.log(err);
-        req.flash('error', 'An error occurred. Please try again.');
-    })
-}
-
 exports.adminPage = [loggedIn, (req, res, next) => {
+    let loggedInUser = req.session.user
     res.render('admin/admin-home', {
-        pageTitle: 'Admin   |   ' + user.username,
-        user: req.session.user,
+        pageTitle: 'Admin   |   ' + loggedInUser.username,
+        user: loggedInUser,
         isAuthenticated: req.session.isLoggedIn
     });
 }]
@@ -146,11 +56,11 @@ exports.addContent = [loggedIn, (req, res, next) => {
 exports.postContentMovie = (req, res, next) => {
     const movie_upload = upload.single('movie_image_file');
     movie_upload(req, res, async (err) => {
-        if(err){
+        if (err) {
             res.status(500).json({
                 errors: ["Some error occurred with the file upload. Please try again."]
             })
-            .end();
+                .end();
         }
         let imageFileLink = (req.file) ? req.file.filename : req.body.imageFileLink;
         let genres = (req.body.genre) ? req.body.genre : [];
@@ -196,7 +106,7 @@ exports.postContentTV = (req, res, next) => {
             res.status(500).json({
                 errors: ["Some error occurred with the file upload. Please try again."]
             })
-            .end();
+                .end();
         }
         let imageFileLink = (req.file) ? req.file.filename : req.body.tvFileLink;
         let genres = (req.body.genre) ? req.body.genre : [];
@@ -252,13 +162,3 @@ exports.getMovieUpdate = [loggedIn, (req, res, next) => {
         edit: false
     });
 }]
-
-exports.postSearchMedia = (req, res, next) => {
-    let mediaType = req.params.mediaType;
-    let searchParam = req.params.searchParam;
-
-    let dbName;
-    if(mediaType == 'TV'){
-        
-    }
-}
