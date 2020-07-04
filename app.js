@@ -4,6 +4,7 @@ const 	express = require('express'),
 		mongoose = require('mongoose'),
 		path = require('path'),
 		expressSession = require('express-session'),
+		helmet = require('helmet'),
 		mongodbSessionStore = require('connect-mongodb-session')(expressSession);
 
 const 	adminRoutes = require('./routes/admin'),
@@ -14,12 +15,16 @@ const 	adminRoutes = require('./routes/admin'),
 		PORT = process.env.PORT||'4000',
 		User = require('./models/user_model'),
 		dbURI = 'mongodb://localhost/the_den',
+		loggedIn = require('./controllers/middlewares/loggedIn'),
 		flash_messages = require('./util/flash_messages');
 
 		
 // ====	Seed Database with sample values	====
 // seedDB.seedMovies();
 // seedDB.seedTVShow();
+
+//	====	Security setup... hehehe	===
+app.use(helmet())
 
 //	====	Template Setup	====
 app.use(bodyParser.urlencoded({ extended: true }));

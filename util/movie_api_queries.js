@@ -23,7 +23,4 @@ class MovieAPI
     }
 }
 
-let testAPI = new MovieAPI()
-testAPI.searchTV('Lucifer')
-
-// module.exports = new MovieAPI();
+module.exports = new MovieAPI();
