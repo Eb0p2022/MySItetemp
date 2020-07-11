@@ -1,16 +1,14 @@
-const Log = require('../../models/log'),
+const 
     Movie = require('../../models/movie'),
-    User = require('../../models/user_model'),
     multer = require('multer'),
     path = require('path'),
-    validations = require('../../util/validate'),
+    validations = require('./adminUtils/validate'),
     TV = require('../../models/tv-show'),
     fs = require('fs');
 
 const loggedIn = require('../middlewares/loggedIn')
 
 const downloadsDir = path.join(__dirname, '../uploads');
-const imageDir = path.join(downloadsDir, 'images');
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
         fs.exists(downloadsDir, (exists) => {

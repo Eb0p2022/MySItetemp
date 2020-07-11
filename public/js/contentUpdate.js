@@ -50,7 +50,7 @@ const fetchSearchResults = (searchParams) => {
     })
     .then(data => {
         if(data.error !== ''){
-            notify(error_field, [(data.error)]);
+            notify(error_field, [data.error]);
             return;
         }
         notify(success_field, data.results.results)
