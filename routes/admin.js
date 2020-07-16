@@ -18,7 +18,7 @@ router.post('/postContent/movie', adminContent.postContentMovie);
 router.post('/postContent/tv', adminContent.postContentTV);
 
 router.get('/updateContent', ...(adminContent.getUpdate));
-router.get('/updateContent/movie', ...(adminContent.getMovieUpdate));
+router.get('/updateContent/movie/:id', ...(adminContent.getMovieUpdate));
 
 router.get('/searchTV/:searchParam', adminUtil.postTVSearch);
 

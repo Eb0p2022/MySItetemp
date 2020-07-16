@@ -10,7 +10,8 @@ exports.postTVSearch = async (req, res, next) => {
     { 
         let response = await MovieDB.searchTV(req.params.searchParam);
         if(response.status == 200 && response.data.results.length != 0){
-            payload.results = Manipulate.repackageMedia(response.data.results)
+            // console.log(response.data.results)
+           payload.results = await Manipulate.repackageMedia(response.data.results)
         } else {
             payload.error = 'The resource you requested could not be found.'
         }

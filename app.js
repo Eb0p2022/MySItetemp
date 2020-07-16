@@ -17,10 +17,10 @@ const 	adminRoutes = require('./routes/admin'),
 		dbURI = 'mongodb://localhost/the_den',
 		loggedIn = require('./controllers/middlewares/loggedIn'),
 		flash_messages = require('./util/flash_messages');
-
 		
-// ====	Seed Database with sample values	====
-// seedDB.seedMovies();
+		
+		// ====	Seed Database with sample values	====
+		// seedDB.seedMovies();
 // seedDB.seedTVShow();
 
 //	====	Security setup... hehehe	===
@@ -47,7 +47,6 @@ app.use(expressSession({
 }));
 
 
-
 //	====	flash messages setup	====
 app.use(flash());
 app.use(flash_messages);
@@ -59,12 +58,12 @@ app.use(errorController.get404);
 
 //  ====    DB Setup    ====
 mongoose
-	.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
-	.then(() => {
-		console.log('Connected to MongoDB');
-		app.listen(PORT, () => {
-			console.log(`The Den Server has started on port ${PORT}...`);
-		})
+.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+.then(() => {
+	console.log('Connected to MongoDB');
+	app.listen(PORT, () => {
+		console.log(`The Den Server has started on port ${PORT}...`);
+	})
 	})
 	.catch(err => {
 		console.log(err);

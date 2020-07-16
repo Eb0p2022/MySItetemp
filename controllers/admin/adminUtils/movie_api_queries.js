@@ -2,7 +2,9 @@ const { image } = require('faker');
 
 const axios = require('axios').default;
 require('dotenv').config();
-const redis = require('redis').createClient();
+const redis = require('redis').createClient({
+    max_attempts: 10
+});
 const apiKey = process.env.MOVIEDB_API_KEY
 class MovieAPI
 {
@@ -47,13 +49,13 @@ class MovieAPI
         });
     }
 
-    getImageURL(filePath, fileSize, movieDBID)
+    async getImageURL(filePath, fileSize)
     {
         return new Promise((resolve, reject) => {
             this.getImageConfig()
                 .then(image_api_address => {
                     const searchPath = image_api_address + `${fileSize}` + `${filePath}`
-                    redis.get(movieDBID, (err, imageURL) => {
+                    redis.get(searchPath, (err, imageURL) => {
                         if (err) throw err
                         if (imageURL !== null) resolve(imageURL)
                         redis.set(filePath, searchPath);
@@ -61,7 +63,7 @@ class MovieAPI
                     })
                 })
                 .catch(error => {
-                    throw error
+                    reject(error)
                 })
         });
     }
